@@ -104,7 +104,7 @@ namespace T3.Editor.Gui.Windows.TimeLine
 
             ImGui.SameLine();
 
-            // Continue Beat indicator
+            // Idle motion 
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, UserSettings.Config.EnableIdleMotion
                                                         ? UiColors.TextDisabled
@@ -133,7 +133,7 @@ namespace T3.Editor.Gui.Windows.TimeLine
 
                     const int gridSize = 4;
                     var drawList = ImGui.GetWindowDrawList();
-                    var min = center - new Vector2(7, 7) + new Vector2(beat * gridSize, bar * gridSize);
+                    var min = center - new Vector2(7, 7) * T3Ui.UiScaleFactor + new Vector2(beat * gridSize, bar * gridSize) * T3Ui.UiScaleFactor;
 
                     drawList.AddRectFilled(min, min + new Vector2(gridSize - 1, gridSize - 1), 
                                            Color.Mix(UiColors.StatusAnimated, 
@@ -184,31 +184,34 @@ namespace T3.Editor.Gui.Windows.TimeLine
             if (settings.Syncing == PlaybackSettings.SyncModes.Tapping)
             {
                 var bpm = BeatTiming.Bpm;
-                if (SingleValueEdit.Draw(ref bpm, new Vector2(100, ControlSize.Y), 1, 360, true, 0.01f, "{0:0.00 BPM}") == InputEditStateFlags.Modified)
+                if (SingleValueEdit.Draw(ref bpm, new Vector2(100, ControlSize.Y) * T3Ui.UiScaleFactor, 1, 360, true, 0.01f, "{0:0.00 BPM}") == InputEditStateFlags.Modified)
                 {
                     BeatTiming.SetBpmRate(bpm);
                 }
 
-                var min = ImGui.GetItemRectMin();
-                var max = ImGui.GetItemRectMax();
-                var bar = (float)Math.Pow(1 - BeatTiming.BeatTime % 1, 4);
-                var height = 1;
-
-                //var volume = BeatTiming.SyncPrecision;
-                ImGui.GetWindowDrawList().AddRectFilled(new Vector2(min.X, max.Y), new Vector2(min.X + 3, max.Y - height * (max.Y - min.Y)),
-                                                        UiColors.StatusAnimated.Fade(bar));
+                // var min = ImGui.GetItemRectMin();
+                // var max = ImGui.GetItemRectMax();
+                // var bar = (float)Math.Pow(1 - BeatTiming.BeatTime % 1, 4);
+                // var height = 1;
+                //
+                // //var volume = BeatTiming.SyncPrecision;
+                // // ImGui.GetWindowDrawList().AddRectFilled(new Vector2(min.X, max.Y), new Vector2(min.X + 3, max.Y - height * (max.Y - min.Y)),
+                // //                                         UiColors.StatusAnimated.Fade(bar));
 
                 ImGui.SameLine();
 
                 ImGui.Button("Sync", ControlSize);
-                if (ImGui.IsItemActivated())
+                if (ImGui.IsItemHovered())
                 {
-                    BeatTiming.TriggerSyncTap();
-                }
-                else if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Right))
-                {
-                    //Log.Debug("Resync!");
-                    BeatTiming.TriggerResyncMeasure();
+                    if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+                    {
+                        BeatTiming.TriggerSyncTap();
+                    }
+                    else if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
+                    {
+                        //Log.Debug("Resync!");
+                        BeatTiming.TriggerResyncMeasure();
+                    }
                 }
 
                 CustomComponents.TooltipForLastItem("Click on beat to sync. Tap later once to refine. Click right to sync measure.");
@@ -519,7 +522,7 @@ namespace T3.Editor.Gui.Windows.TimeLine
                     }
                 }
             }
-
+            CustomComponents.TooltipForLastItem("Keep animated parameters visible", "This can be useful when align animations between multiple operators. Toggle again to clear the visible animations.");
             ImGui.SameLine();
         }
 

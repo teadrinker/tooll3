@@ -58,12 +58,12 @@ namespace T3.Editor.Gui.Windows.Layouts
                                new RenderSequenceWindow(),
                                new RenderVideoWindow(),
                                new UtilitiesWindow(),
-                               new ConsoleLogWindow(),
+                               Program.ConsoleLogWindow,
                                new IoViewWindow(),
                                new SettingsWindow(),
                            };            
 
-            LayoutHandling.LoadAndApplyLayout(UserSettings.Config.WindowLayoutIndex);
+            LayoutHandling.LoadAndApplyLayoutOrFocusMode(UserSettings.Config.WindowLayoutIndex);
 
             _appWindowSize = ImGui.GetIO().DisplaySize;
             _hasBeenInitialized = true;
