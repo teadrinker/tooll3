@@ -1,6 +1,6 @@
 {
   "Id": "94a392e6-3e03-4ccf-a114-e6fafa263b4f"/*SequenceAnim*/,
-  "Description": "",
+  "Description": "This has a hardcoded source range from 0 to 8. If you do a binary sequence and want 0 to 1 as output, you need to set MaxValue to 8, or select CharacterValue as OutputMode.\n\nBias behaviours for the different OutputModes:\n \"Pulse\" : Bias is applied to the ramp within each segment\n \"NormalizedValue\" : Bias is is applied to source range (0-8)\n \"CharacterValue\" : Bias is ignored (MinValue/MaxValue are also ignored)\n",
   "InputUis": [
     {
       "InputId": "7bdfb9a8-87b3-4603-890c-fe755f4c4492"/*Sequence*/,
